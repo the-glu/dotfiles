@@ -273,6 +273,13 @@ vmap <Leader>P "+P
 map <c-left> :bprevious<CR>
 map <c-right> :bnext<CR>
 
+" Select with <enter> completion
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" Always select the first element
+inoremap <expr> <C-n> pumvisible() ? '<C-n>' :
+  \ '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+
 """""""""""""""""
 " Misc commands "
 """""""""""""""""
