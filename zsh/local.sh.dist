@@ -1,0 +1,2 @@
+export ZSH_USE_GIT=yes
+export ZSH_FULL_PROMPT=yes

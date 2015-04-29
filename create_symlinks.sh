@@ -10,7 +10,7 @@
 dir=~/dotfiles # dotfiles directory
 olddir=~/dotfiles_old # old dotfiles backup directory
 
-files="screenrc conky conkyrc_laptop conkyrc_fixe vim vimrc" # list of files/folders to symlink in homedir
+files="screenrc conky conkyrc_laptop conkyrc_fixe vim vimrc zsh zshrc" # list of files/folders to symlink in homedir
 
 ##########
 # create dotfiles_old in homedir
