@@ -8,3 +8,5 @@ alias l='ls -CF'
 alias vi=vim
 
 alias fuck='$(thefuck $(fc -ln -1))'
+
+alias neovim='NVIM_TUI_ENABLE_TRUE_COLOR=1 konsole -e nvim'

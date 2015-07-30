@@ -215,7 +215,7 @@ hi CursorLine term=bold gui=bold cterm=bold guibg=Grey40
 
 set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 10
 
-if has("gui_running")
+if has("gui_running") || has('nvim')
     colorscheme codeschool
     set foldcolumn=0
 endif
