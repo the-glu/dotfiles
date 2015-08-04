@@ -120,6 +120,10 @@ let g:airline_left_sep = ''
 let g:airline_right_sep = ''
 let g:airline_powerline_fonts=1
 
+Plug 'ctrlpvim/ctrlp.vim'
+
+Plug 'ryanoasis/vim-webdevicons'
+
 call plug#end()
 
 """"""""""""""""""""
@@ -213,7 +217,7 @@ hi CursorLine term=bold gui=bold cterm=bold guibg=Grey40
 :set background=dark
 :color grb256
 
-set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 10
+set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ Plus\ Nerd\ File\ Types\ 10
 
 if has("gui_running") || has('nvim')
     colorscheme codeschool
