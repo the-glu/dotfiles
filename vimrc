@@ -124,6 +124,8 @@ Plug 'ctrlpvim/ctrlp.vim'
 
 Plug 'ryanoasis/vim-webdevicons'
 
+Plug 'unblevable/quick-scope'
+
 call plug#end()
 
 """"""""""""""""""""
