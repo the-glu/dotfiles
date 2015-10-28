@@ -310,5 +310,48 @@ endfunction
 inoremap <tab> <c-r>=InsertTabWrapper()<cr>
 inoremap <s-tab> <c-n>
 
+"""""""""""""""
+" CPP <-> HPP "
+"""""""""""""""
+
+" Stolen from @mpbraendli
+"
+"Leader-f switches from C source .c to header .h file
+"It automatically detects .cpp <-> .h
+"                         .c   <-> .h
+"                         .cpp <-> .hpp
+function! MPB_Flip_Ext()
+python << endpython
+import vim
+import os.path
+
+def loadfile(filename):
+    vim.command("e {}".format(filename))
+
+currentfile = vim.eval('expand("%")')
+
+if currentfile.endswith(".c"):
+    loadfile(currentfile[:-2] + ".h")
+elif currentfile.endswith(".h"):
+    basename = currentfile[:-2]
+    if os.path.exists(basename + ".cpp"):
+        loadfile(basename + ".cpp")
+    else:
+        loadfile(basename + ".c")
+elif currentfile.endswith(".cpp"):
+    basename = currentfile[:-4]
+    if os.path.exists(basename + ".h"):
+        loadfile(basename + ".h")
+    else:
+        loadfile(basename + ".hpp")
+elif currentfile.endswith(".hpp"):
+    basename = currentfile[:-4]
+    loadfile(basename + ".cpp")
+
+endpython
+endfun
+
+noremap <Leader>f :call MPB_Flip_Ext()<CR>
+
 :let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 :let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
