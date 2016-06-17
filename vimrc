@@ -56,8 +56,8 @@ let g:Powerline_symbols = 'unicode'
 
 let g:syntastic_python_checkers=['flake8', 'pyflakes', 'pep8', 'py3kwarn']
 let g:syntastic_python_checker_args='--ignore=E501'
-let g:syntastic_python_flake8_post_args='--ignore=E501,E128,E225'
-let g:syntastic_python_pep8_post_args='--ignore=E501,E128,E225'
+let g:syntastic_python_flake8_post_args='--ignore=E501,E128'
+let g:syntastic_python_pep8_post_args='--ignore=E501,E128'
 let g:syntastic_scala_checkers=[]
 let g:syntastic_java_checkers=[]
 "Always check when buffers are opened
@@ -125,6 +125,8 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'ryanoasis/vim-webdevicons'
 
 Plug 'unblevable/quick-scope'
+
+Plug 'saltstack/salt-vim'
 
 call plug#end()
 
@@ -219,7 +221,7 @@ hi CursorLine term=bold gui=bold cterm=bold guibg=Grey40
 :set background=dark
 :color grb256
 
-set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ Plus\ Nerd\ File\ Types\ 10
+set guifont="DejaVu Sans Mono for Powerline Plus Nerd File Types Mono 10"
 
 if has("gui_running") || has('nvim')
     colorscheme codeschool
