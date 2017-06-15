@@ -1,3 +1,5 @@
+﻿set encoding=utf-8
+scriptencoding utf-8
 """""""""""
 " Plugins "
 """""""""""
@@ -32,7 +34,8 @@ Plug 'wellle/targets.vim'
 
 " Nerd tree
 Plug 'scrooloose/nerdtree'
-let g:NERDTreeMouseMode=2
+
+let g:NERDTreeMouseMode=1
 autocmd vimenter * if !argc() | NERDTree | endif
 map <silent> <C-n> :NERDTreeToggle<CR>
 let NERDTreeIgnore = ['\.pyc$']
@@ -111,7 +114,7 @@ let g:multi_cursor_prev_key='<C-p>'
 let g:multi_cursor_skip_key='<C-x>'
 let g:multi_cursor_quit_key='<Esc>'
 
-Plug 'bufkill.vim'
+Plug 'vim-scripts/bufkill.vim'
 
 
 " Airline
@@ -127,6 +130,8 @@ Plug 'ryanoasis/vim-webdevicons'
 Plug 'unblevable/quick-scope'
 
 Plug 'saltstack/salt-vim'
+
+Plug 'jplaut/vim-arduino-ino'
 
 call plug#end()
 
@@ -171,7 +176,8 @@ set foldmethod=indent
 set foldlevel=99
 
 set mouse=a
-set listchars=tab:⇝·,trail:⚠,extends:⇝,precedes:⇜,eol:⚡
+" set listchars=tab:⇝·,trail:⚠,extends:⇝,precedes:⇜,eol:⚡
+set listchars=tab:⇝·,trail:⚠,extends:⇝,precedes:⇜,eol:␤
 set list
 
 set incsearch
@@ -212,6 +218,7 @@ augroup END
 """"""""""
 " Colors "
 """"""""""
+set termguicolors
 
 " Highlight currentline
 set cursorline
@@ -288,6 +295,8 @@ inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 inoremap <expr> <C-n> pumvisible() ? '<C-n>' :
   \ '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
 
+map <Leader><tab> :set shiftwidth=4 expandtab<CR>
+
 """""""""""""""""
 " Misc commands "
 """""""""""""""""
@@ -299,7 +308,9 @@ cmap w!! w !sudo tee % > /dev/null
 " Tab key "
 """""""""""
 
-" Complete only if not @ the beggining of a line
+" Complete only if not dth=4 
+"  set expandtab dth=4 
+"  set expandtab @ the beggining of a line
 function! InsertTabWrapper()
     let col = col('.') - 1
     if !col || getline('.')[col - 1] !~ '\k'
@@ -357,3 +368,7 @@ noremap <Leader>f :call MPB_Flip_Ext()<CR>
 
 :let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 :let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+
+au BufRead,BufNewFile *.pde set filetype=arduino
+au BufRead,BufNewFile *.ino set filetype=arduino
+let g:vim_arduino_ino_cmd = 'ano'
