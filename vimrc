@@ -25,6 +25,8 @@ Plug 'tpope/vim-repeat'
 " Highlight all search results
 Plug 'haya14busa/incsearch.vim'
 
+Plug 'michaeljsmith/vim-indent-object'
+
 " Undo tree
 Plug 'sjl/gundo.vim', {'on': 'GundoToggle'}
 nnoremap <silent> <leader>u <Esc>:<C-u>GundoToggle<CR>
