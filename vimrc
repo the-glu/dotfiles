@@ -79,8 +79,8 @@ Plug 'ervandew/supertab'
 let g:airline#extensions#tabline#enabled = 1
 
 " Python completion
-Plug 'davidhalter/jedi-vim'
-let g:jedi#use_tabs_not_buffers = 0
+" Plug 'davidhalter/jedi-vim'
+" let g:jedi#use_tabs_not_buffers = 0
 set splitbelow
 
 " gc to comment
@@ -97,6 +97,8 @@ Plug 'klen/python-mode'
 let g:pymode_lint_on_write = 0
 let g:pymode_lint_signs = 0
 let g:pymode_folding = 0
+let g:pymode_python = 'python3'
+let g:pymode_rope_completion = 0
 
 " vv selection
 Plug 'gorkunov/smartpairs.vim'
@@ -134,6 +136,17 @@ Plug 'unblevable/quick-scope'
 Plug 'saltstack/salt-vim'
 
 Plug 'jplaut/vim-arduino-ino'
+
+Plug 'posva/vim-vue'
+
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+let g:deoplete#enable_at_startup = 1
+
+Plug 'Shougo/context_filetype.vim'
+
+Plug 'zchee/deoplete-jedi'
+
+Plug 'sheerun/vim-polyglot'
 
 call plug#end()
 
@@ -309,6 +322,8 @@ cmap w!! w !sudo tee % > /dev/null
 """""""""""
 " Tab key "
 """""""""""
+
+set completeopt-=preview
 
 " Complete only if not dth=4 
 "  set expandtab dth=4 
