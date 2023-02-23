@@ -47,6 +47,10 @@ Plug 'majutsushi/tagbar'
 let g:tagbar_autofocus = 1
 map <C-t> :TagbarToggle<CR>
 
+let g:python_host_prog="/usr/bin/python"
+let g:python3_host_prog="/usr/bin/python"
+let g:pymode_rope = 0
+
 " Syntaxe checking
 Plug 'scrooloose/syntastic'
 let g:syntastic_auto_loc_list=0
@@ -98,7 +102,7 @@ let g:pymode_lint_on_write = 0
 let g:pymode_lint_signs = 0
 let g:pymode_folding = 0
 let g:pymode_python = 'python3'
-"let g:pymode_rope_completion = 0
+let g:pymode_rope_completion = 0
 
 " vv selection
 Plug 'gorkunov/smartpairs.vim'
@@ -148,6 +152,8 @@ Plug 'Shougo/context_filetype.vim'
 
 Plug 'sheerun/vim-polyglot'
 
+Plug 'psliwka/vim-smoothie'
+
 call plug#end()
 
 """"""""""""""""""""
@@ -186,13 +192,14 @@ let mapleader=" "
 set nu
 
 " Folding
+"  
 set foldcolumn=1
 set foldmethod=indent
 set foldlevel=99
 
 set mouse=a
 " set listchars=tab:⇝·,trail:⚠,extends:⇝,precedes:⇜,eol:⚡
-set listchars=tab:⇝·,trail:⚠,extends:⇝,precedes:⇜,eol:␤
+set listchars=tab:⇝·,trail:⚠,extends:⇝,precedes:⇜,eol:▹
 set list
 
 set incsearch
@@ -389,3 +396,5 @@ noremap <Leader>f :call MPB_Flip_Ext()<CR>
 au BufRead,BufNewFile *.pde set filetype=arduino
 au BufRead,BufNewFile *.ino set filetype=arduino
 let g:vim_arduino_ino_cmd = 'ano'
+
+:set colorcolumn=80

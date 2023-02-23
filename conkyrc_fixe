@@ -1,96 +1,90 @@
+conky.config = {
 
-# Conky settings #
-background no
-update_interval 1
-double_buffer yes
-no_buffers yes
+-- Conky settings #
+	background = false,
+	update_interval = 1,
+	double_buffer = true,
+	no_buffers = true,
 
-# Window specifications #
-own_window yes
-own_window_type normal
-own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
-own_window_title 
-own_window_colour 2D2D2D
-own_window_argb_value 200
-own_window_argb_visual yes
-own_window_type override
+-- Window specifications #
+	own_window = true,
+	own_window_type = 'normal',
+	own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
+	own_window_title = '',
+	own_window_colour = '#2D2D2D',
+	own_window_argb_value = 200,
+	own_window_argb_visual = true,
+	own_window_type = 'override',
 
-minimum_size 250
+	minimum_width = 250,
 
-# Alignment #
-alignment tl
-xinerama_head 1
-gap_x 50
-gap_y 00
+-- Alignment #
+	alignment = 'top_left',
+	xinerama_head = 1,
+	gap_x = 50,
+	gap_y = 00,
 
-border_inner_margin 15
-border_outer_margin 0
+	border_inner_margin = 15,
+	border_outer_margin = 0,
 
-# Graphics settings #
-draw_shades no
-draw_outline no
-draw_borders no
-draw_graph_borders no
+-- Graphics settings #
+	draw_shades = false,
+	draw_outline = false,
+	draw_borders = false,
+	draw_graph_borders = false,
 
-# Text settings #
-use_xft yes
-xftalpha 1
-xftfont Open Sans Light:size=10
+-- Text settings #
+	use_xft = true,
+	xftalpha = 1,
+	font = 'Open Sans Light:size=10',
 
-override_utf8_locale yes
+	override_utf8_locale = true,
 
-imlib_cache_size 0
+	imlib_cache_size = 0,
 
-# Color scheme #
-default_color DCDCDC
+-- Color scheme #
+	default_color = '#DCDCDC',
 
-color1 0099CC
-color2 9933CC
-color3 669900
-color4 FF8800
-color5 CC0000
-color6 AAAAAA
-color7 484848
+	color1 = '#0099CC',
+	color2 = '#9933CC',
+	color3 = '#669900',
+	color4 = '#FF8800',
+	color5 = '#CC0000',
+	color6 = '#AAAAAA',
+	color7 = '#484848',
+	color8 = '#9c9c9c',
+	color9 = '#cccccc',
 
-TEXT
+    --#lua_load = './dotfiles/conky/conky_draw.lua',
+    --#lua_draw_hook_pre = 'main',
+
+};
+
+conky.text = [[
 
 
 
-${color}${font DotMatrix:size=32}${alignc}${time %H %M}
-${font}${color6}${alignc}${voffset -20}${time %d/%m/%y}
-${color1}Date:${color3}${alignr}${time %D}
+${color}${font DotMatrix_TR:size=32}${alignc}${time %H %M}
+${alignc}${font Noto Sans mono:size=12}${color0}${time %b %Y}${color}
+${font Noto Sans mono:size=10}${goto 50}${color8}LU MA ME JE VE SA DI
+${goto 50}${color8}${execpi 1800 LAR=`date +%-d`; ncal -bhM | sed '2d' | sed -e '1d' -e 's/\<'$LAR'\>/${color0}&${color8}/' | sed ':a;N;$!ba;s/\n/\n${goto 50}/g'}${color8}${font}
+
+${color7}${hr}${color}${font Noto Sans light:size=10}
+
+
+${if_existing /proc/net/route enp47s0u2u1u2}${color1}enp47s0u2u1u2: ${color3}${alignr}${addr enp47s0u2u1u2}
+${color1}Up:${color} ${color3}${upspeed enp47s0u2u1u2}${color}${alignr}${color1}Down:${color} ${color3}${downspeed enp47s0u2u1u2}${color}
+${upspeedgraph enp47s0u2u1u2 20,120 FF8800 FF8800}${alignr}${downspeedgraph enp47s0u2u1u2 20,120 FF8800 FF8800}
+${color1}Sent:${color} ${color2}${totalup enp47s0u2u1u2}${color}${alignr}${color1}Received:${color} ${color2}${totaldown enp47s0u2u1u2}${color}${endif}${if_existing /proc/net/route enp0s31f6}${color1}enp0s31f6: ${color3}${alignr}${addr enp0s31f6}
+${color1}Up:${color} ${color3}${upspeed enp0s31f6}${color}${alignr}${color1}Down:${color} ${color3}${downspeed enp0s31f6}${color}
+${upspeedgraph enp0s31f6 20,120 FF8800 FF8800}${alignr}${downspeedgraph enp0s31f6 20,120 FF8800 FF8800}
+${color1}Sent:${color} ${color2}${totalup enp0s31f6}${color}${alignr}${color1}Received:${color} ${color2}${totaldown enp0s31f6}${color}${endif}${if_existing /proc/net/route wlp82s0}${color1}wlp82s0: ${color3}${alignr}${addr wlp82s0}
+${color1}Up:${color} ${color3}${upspeed wlp82s0}${color}${alignr}${color1}Down:${color} ${color3}${downspeed wlp82s0}${color}
+${upspeedgraph wlp82s0 20,120 FF8800 FF8800}${alignr}${downspeedgraph wlp82s0 20,120 FF8800 FF8800}
+${color1}Sent:${color} ${color2}${totalup wlp82s0}${color}${alignr}${color1}Received:${color} ${color2}${totaldown wlp82s0}${color}${endif}
+
+
 ${color7}${hr}${color}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-${color7}${hr}${color}
-${if_existing /proc/net/route eno1}${color1}eno1: ${color3}${alignr}${addr eno1}
-${color1}Up:${color} ${color3}${upspeed eno1}${color}${alignr}${color1}Down:${color} ${color3}${downspeed eno1}${color}
-${upspeedgraph eno1 20,120 FF8800 FF8800}${alignr}${downspeedgraph eno1 20,120 FF8800 FF8800}
-${color1}Sent:${color} ${color2}${totalup eno1}${color}${alignr}${color1}Received:${color} ${color2}${totaldown eno1}${color}${endif}
-${color7}${hr}${color}${if_existing /proc/net/route enp18s0}
-${color1}enp18s0: ${color3}${alignr}${addr enp18s0}
-${color1}Up:${color} ${color3}${upspeed enp18s0}${color}${alignr}${color1}Down:${color} ${color3}${downspeed enp18s0}${color}
-${upspeedgraph enp18s0 20,120 FF8800 FF8800}${alignr}${downspeedgraph enp18s0 20,120 FF8800 FF8800}
-${color1}Sent:${color} ${color2}${totalup enp18s0}${color}${alignr}${color1}Received:${color} ${color2}${totaldown enp18s0}${color}${endif}
-${color7}${hr}${color}
-
-
-
-
-
 
 
 ${color1}Kernel:${color3}${alignr}$kernel
@@ -99,22 +93,34 @@ ${color1}Governor: ${color3}${alignr}${execi 5 cat /sys/devices/system/cpu/cpu0/
 ${color1}Speed: ${color3}${alignr}${execi 5 ~/.conky/scripts/cpu_mhz}GHz
 
 
+${color7}${hr}${color}
+
 
 ${color1}Cpu1:${color3}${alignr}${cpu cpu1}% ${cpu cpu2}% ${color2}${execi 20 sensors coretemp-isa-0000 |grep "Core 0" |awk '{print $3}'}
 ${color1}Cpu2:${color3}${alignr}${cpu cpu3}% ${cpu cpu4}% ${color2}${execi 20 sensors coretemp-isa-0000 |grep "Core 1" |awk '{print $3}'}
 ${color1}Cpu3:${color3}${alignr}${cpu cpu5}% ${cpu cpu6}% ${color2}${execi 20 sensors coretemp-isa-0000 |grep "Core 2" |awk '{print $3}'}
 ${color1}Cpu4:${color3}${alignr}${cpu cpu7}% ${cpu cpu8}% ${color2}${execi 20 sensors coretemp-isa-0000 |grep "Core 3" |awk '{print $3}'}
+${color1}Cpu5:${color3}${alignr}${cpu cpu9}% ${cpu cpu10}% ${color2}${execi 20 sensors coretemp-isa-0000 |grep "Core 4" |awk '{print $3}'}
+${color1}Cpu6:${color3}${alignr}${cpu cpu11}% ${cpu cpu12}% ${color2}${execi 20 sensors coretemp-isa-0000 |grep "Core 5" |awk '{print $3}'}
 ${color2}${cpugraph cpu1 20,120 FF8800 FF8800} ${color2}${cpugraph cpu2 20,120 FF8800 FF8800} 
 ${color2}${cpugraph cpu3 20,120 FF8800 FF8800} ${color2}${cpugraph cpu4 20,120 FF8800 FF8800} 
 ${color2}${cpugraph cpu5 20,120 FF8800 FF8800} ${color2}${cpugraph cpu6 20,120 FF8800 FF8800} 
 ${color2}${cpugraph cpu7 20,120 FF8800 FF8800} ${color2}${cpugraph cpu8 20,120 FF8800 FF8800} 
+${color2}${cpugraph cpu9 20,120 FF8800 FF8800} ${color2}${cpugraph cpu10 20,120 FF8800 FF8800} 
+${color2}${cpugraph cpu11 20,120 FF8800 FF8800} ${color2}${cpugraph cpu12 20,120 FF8800 FF8800} 
 
+
+${color7}${hr}${color}
 
 
 ${color1}Ram:${color3}${alignr}$mem
 ${color1}Root:     ${color3}${alignr}${fs_used_perc /}%
+${color1}Data:     ${color3}${alignr}${fs_used_perc /mnt/data/}%
 ${color1}Disk IO:${color3} ${alignr}$diskio
 ${color2}${diskiograph 20,240 FF8800 FF8800}
+${color1}IntBattery: ${color3}${alignr}$battery ${color2}$battery_time
+
+${color7}${hr}${color}
 
 
 
@@ -124,4 +130,4 @@ ${color2}${diskiograph 20,240 FF8800 FF8800}
 
 
 
-
+]];

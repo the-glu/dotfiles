@@ -1,1 +1,0 @@
-#gcalcli agenda --calendar N900 --conky --military --color | sed -e 's/color yellow\}/color1\}/g' | sed -e 's/color cyan\}/color3\}$\{alignr\}/g'
