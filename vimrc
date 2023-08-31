@@ -154,6 +154,11 @@ Plug 'sheerun/vim-polyglot'
 
 Plug 'psliwka/vim-smoothie'
 
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim', { 'branch': '0.1.x' }
+
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
 call plug#end()
 
 """"""""""""""""""""
@@ -398,3 +403,7 @@ au BufRead,BufNewFile *.ino set filetype=arduino
 let g:vim_arduino_ino_cmd = 'ano'
 
 :set colorcolumn=80
+
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fc <cmd>Telescope git_commits<cr>
