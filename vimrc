@@ -72,7 +72,6 @@ let g:syntastic_java_checkers=[]
 "Always check when buffers are opened
 let g:syntastic_check_on_open=1
 
-
 " Git signs
 Plug 'airblade/vim-gitgutter'
 let g:gitgutter_eager = 0 " only update on read/write
@@ -159,6 +158,13 @@ Plug 'nvim-telescope/telescope.nvim', { 'branch': '0.1.x' }
 
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+
+Plug 'rktjmp/lush.nvim'
+Plug 'adisen99/codeschool.nvim'
+
+Plug 'neovim/nvim-lspconfig'
+
 call plug#end()
 
 """"""""""""""""""""
@@ -204,7 +210,8 @@ set foldlevel=99
 
 set mouse=a
 " set listchars=tab:⇝·,trail:⚠,extends:⇝,precedes:⇜,eol:⚡
-set listchars=tab:⇝·,trail:⚠,extends:⇝,precedes:⇜,eol:▹
+" set listchars=tab:⇝·,trail:⚠,extends:⇝,precedes:⇜,eol:▹
+set listchars=tab:\ \ ,trail:⚠,extends:⇝,precedes:⇜,eol:▹
 set list
 
 set incsearch
@@ -258,9 +265,62 @@ hi CursorLine term=bold gui=bold cterm=bold guibg=Grey40
 set guifont="DejaVu Sans Mono for Powerline Plus Nerd File Types Mono 10"
 
 if has("gui_running") || has('nvim')
-    colorscheme codeschool
+    " colorscheme codeschool
     set foldcolumn=0
 endif
+
+lua << EOF
+    require('lush')(require('codeschool').setup({
+  plugins = {
+    "buftabline",
+    "coc",
+    "cmp", -- nvim-cmp
+    "fzf",
+    "gitgutter",
+    "gitsigns",
+    "lsp",
+    "lspsaga",
+    "nerdtree",
+    "netrw",
+    "nvimtree",
+    "neogit",
+    "packer",
+    "signify",
+    "startify",
+    "syntastic",
+    "telescope",
+    "treesitter"
+  },
+  langs = {
+    "c",
+    "clojure",
+    "coffeescript",
+    "csharp",
+    "css",
+    "elixir",
+    "golang",
+    "haskell",
+    "html",
+    "java",
+    "js",
+    "json",
+    "jsx",
+    "lua",
+    "markdown",
+    "moonscript",
+    "objc",
+    "ocaml",
+    "purescript",
+    "python",
+    "ruby",
+    "rust",
+    "scala",
+    "typescript",
+    "viml",
+    "xml"
+  }
+}))
+EOF
 
 hi NonText ctermfg=64 guifg=#7A7912
 hi SpecialKey ctermfg=64 guifg=#7A7912
@@ -352,49 +412,6 @@ endfunction
 inoremap <tab> <c-r>=InsertTabWrapper()<cr>
 inoremap <s-tab> <c-n>
 
-"""""""""""""""
-" CPP <-> HPP "
-"""""""""""""""
-
-" Stolen from @mpbraendli
-"
-"Leader-f switches from C source .c to header .h file
-"It automatically detects .cpp <-> .h
-"                         .c   <-> .h
-"                         .cpp <-> .hpp
-function! MPB_Flip_Ext()
-python << endpython
-import vim
-import os.path
-
-def loadfile(filename):
-    vim.command("e {}".format(filename))
-
-currentfile = vim.eval('expand("%")')
-
-if currentfile.endswith(".c"):
-    loadfile(currentfile[:-2] + ".h")
-elif currentfile.endswith(".h"):
-    basename = currentfile[:-2]
-    if os.path.exists(basename + ".cpp"):
-        loadfile(basename + ".cpp")
-    else:
-        loadfile(basename + ".c")
-elif currentfile.endswith(".cpp"):
-    basename = currentfile[:-4]
-    if os.path.exists(basename + ".h"):
-        loadfile(basename + ".h")
-    else:
-        loadfile(basename + ".hpp")
-elif currentfile.endswith(".hpp"):
-    basename = currentfile[:-4]
-    loadfile(basename + ".cpp")
-
-endpython
-endfun
-
-noremap <Leader>f :call MPB_Flip_Ext()<CR>
-
 :let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 :let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 
@@ -404,6 +421,15 @@ let g:vim_arduino_ino_cmd = 'ano'
 
 :set colorcolumn=80
 
+"require'lspconfig'.pylyzer.setup{}
+"
+lua << EOF
+require'lspconfig'.gopls.setup{}
+require'lspconfig'.pyright.setup{}
+EOF
+
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
 nnoremap <leader>fc <cmd>Telescope git_commits<cr>
+nnoremap <leader>fd <cmd>Telescope lsp_definitions<cr>
+nnoremap <leader>fr <cmd>Telescope lsp_references<cr>
