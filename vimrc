@@ -165,7 +165,10 @@ Plug 'adisen99/codeschool.nvim'
 
 Plug 'neovim/nvim-lspconfig'
 
+Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
+
 call plug#end()
+
 
 """"""""""""""""""""
 " General settings "
@@ -335,6 +338,33 @@ highlight GitGutterAdd  guifg=#009900 guibg=#3E3D32 ctermfg=2 ctermbg=8
 highlight GitGutterChange guifg=#bbbb00 guibg=#3E3D32 ctermfg=3 ctermbg=8
 highlight GitGutterDelete  guifg=#ff2222 guibg=#3E3D32 ctermfg=1 ctermbg=8
 
+
+lua << EOF
+
+vim.api.nvim_create_autocmd({ "CursorHold" }, {
+    pattern = "*",
+    callback = function()
+        for _, winid in pairs(vim.api.nvim_tabpage_list_wins(0)) do
+            if vim.api.nvim_win_get_config(winid).zindex then
+                return
+            end
+        end
+        vim.diagnostic.open_float({
+            scope = "cursor",
+            focusable = false,
+            close_events = {
+                "CursorMoved",
+                "CursorMovedI",
+                "BufHidden",
+                "InsertCharPre",
+                "WinLeave",
+            },
+        })
+    end
+})
+
+EOF
+
 """""""""""""""
 " Status line "
 """""""""""""""
@@ -421,11 +451,20 @@ let g:vim_arduino_ino_cmd = 'ano'
 
 :set colorcolumn=80
 
-"require'lspconfig'.pylyzer.setup{}
-"
 lua << EOF
-require'lspconfig'.gopls.setup{}
-require'lspconfig'.pyright.setup{}
+local lspconfig = require('lspconfig')
+
+-- require'lspconfig'.gopls.setup{}
+-- require'lspconfig'.pyright.setup{}
+
+vim.g.coq_settings = { auto_start = 'shut-up' }
+
+local servers = { 'gopls', 'pyright'}
+for _, lsp in ipairs(servers) do
+  lspconfig[lsp].setup(require('coq').lsp_ensure_capabilities({}))
+end
+
+
 EOF
 
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
@@ -433,3 +472,5 @@ nnoremap <leader>ff <cmd>Telescope find_files<cr>
 nnoremap <leader>fc <cmd>Telescope git_commits<cr>
 nnoremap <leader>fd <cmd>Telescope lsp_definitions<cr>
 nnoremap <leader>fr <cmd>Telescope lsp_references<cr>
+
+highlight link DiagnosticError CodeschoolError
