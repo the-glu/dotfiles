@@ -156,7 +156,7 @@ Plug 'psliwka/vim-smoothie'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim', { 'branch': '0.1.x' }
 
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+"Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
@@ -165,7 +165,17 @@ Plug 'adisen99/codeschool.nvim'
 
 Plug 'neovim/nvim-lspconfig'
 
+Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
+
+Plug 'nvim-lua/plenary.nvim'
+Plug 'linux-cultist/venv-selector.nvim'
+
+Plug 'stevearc/conform.nvim'
+
+"Plug 'tomtomjhj/coq-lsp.nvim'
+
 call plug#end()
+
 
 """"""""""""""""""""
 " General settings "
@@ -289,7 +299,7 @@ lua << EOF
     "startify",
     "syntastic",
     "telescope",
-    "treesitter"
+    --"treesitter"
   },
   langs = {
     "c",
@@ -335,6 +345,33 @@ highlight GitGutterAdd  guifg=#009900 guibg=#3E3D32 ctermfg=2 ctermbg=8
 highlight GitGutterChange guifg=#bbbb00 guibg=#3E3D32 ctermfg=3 ctermbg=8
 highlight GitGutterDelete  guifg=#ff2222 guibg=#3E3D32 ctermfg=1 ctermbg=8
 
+
+lua << EOF
+
+vim.api.nvim_create_autocmd({ "CursorHold" }, {
+    pattern = "*",
+    callback = function()
+        for _, winid in pairs(vim.api.nvim_tabpage_list_wins(0)) do
+            if vim.api.nvim_win_get_config(winid).zindex then
+                return
+            end
+        end
+        vim.diagnostic.open_float({
+            scope = "cursor",
+            focusable = false,
+            close_events = {
+                "CursorMoved",
+                "CursorMovedI",
+                "BufHidden",
+                "InsertCharPre",
+                "WinLeave",
+            },
+        })
+    end
+})
+
+EOF
+
 """""""""""""""
 " Status line "
 """""""""""""""
@@ -347,7 +384,7 @@ highlight GitGutterDelete  guifg=#ff2222 guibg=#3E3D32 ctermfg=1 ctermbg=8
 
 map <c-c> <esc>
 :nnoremap <CR> :nohlsearch<cr>
-set pastetoggle=<F10>
+"set pastetoggle=<F10>
 
 " F6: Highlight the word under cursor in darkred
 highlight ManualHighlight ctermbg=darkred guibg=darkred
@@ -421,15 +458,50 @@ let g:vim_arduino_ino_cmd = 'ano'
 
 :set colorcolumn=80
 
-"require'lspconfig'.pylyzer.setup{}
-"
 lua << EOF
-require'lspconfig'.gopls.setup{}
-require'lspconfig'.pyright.setup{}
+local lspconfig = require('lspconfig')
+
+-- require'lspconfig'.gopls.setup{}
+-- require'lspconfig'.pyright.setup{}
+--
+-- vim.g.coq_settings = { auto_start = 'shut-up' }
+
+local servers = { 'gopls', 'pyright', 'ruff'}
+for _, lsp in ipairs(servers) do
+  lspconfig[lsp].setup(require('coq').lsp_ensure_capabilities({}))
+end
+
+
+vim.keymap.set("n", ",v", "<cmd>VenvSelect<cr>", { desc = "Select Python venv" })
+require("venv-selector").setup({ search = {}, options = {} })
+
+require("conform").setup({
+  formatters_by_ft = {
+    python = { "ruff_fix", "ruff_format" },
+  },
+})
+
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*",
+  callback = function(args)
+    require("conform").format({ bufnr = args.buf })
+  end,
+})
+
 EOF
+
+
+" vim.lsp.config('gopls', require('coq').lsp_ensure_capabilities({}))
+" vim.lsp.config('pyright', require('coq').lsp_ensure_capabilities({}))
+" vim.lsp.config('ruff', require('coq').lsp_ensure_capabilities({}))
+"
+" lua require'coq-lsp'.setup()
 
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
 nnoremap <leader>fc <cmd>Telescope git_commits<cr>
 nnoremap <leader>fd <cmd>Telescope lsp_definitions<cr>
 nnoremap <leader>fr <cmd>Telescope lsp_references<cr>
+nnoremap <leader>f<leader> <cmd>Telescope resume<cr>
+
+highlight link DiagnosticError CodeschoolError
