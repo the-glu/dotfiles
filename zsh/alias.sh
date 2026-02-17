@@ -15,3 +15,33 @@ alias megapush="git checkout master && git pull && git checkout deep && git pull
 alias pushtest="git checkout master && git pull && git checkout testing && git pull && git merge master && git push"
 alias pushprod="git checkout master && git pull && git checkout prod && git pull && git merge master && git push"
 alias batlim="sudo ectool fwchargelimit"
+
+alias gpf="git bebeplanteforte --force"
+alias btm="(git checkout master || git checkout main); git pull"
+
+alias qrb='function _qrb() {
+  local T="$1"
+  local C=$(git rev-parse --abbrev-ref HEAD)
+
+  if [ -z "$T" ]; then
+    echo "Usage: qrb <branch>"; return 1
+  fi
+
+  if ! git rev-parse --verify "$T" >/dev/null 2>&1; then
+    echo "Branch $T does not exist"; return 1
+  fi
+
+  git log --oneline "$C..$T"
+
+  read "confirm?Reset branch $T to $C, keeping latest commit? [y/N] "
+  if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
+    echo "Aborted"
+    return 1
+  fi
+
+  local LAST_COMMIT=$(git rev-list "$C..$T" | head -n1)
+
+  git branch -D "$T" || return 1
+  git checkout -b "$T" || return 1
+  git cherry-pick "$LAST_COMMIT"
+}; _qrb'
