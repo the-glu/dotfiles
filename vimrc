@@ -129,6 +129,13 @@ Plug 'bling/vim-airline'
 let g:airline_left_sep = ''
 let g:airline_right_sep = ''
 let g:airline_powerline_fonts=1
+function! s:AirlineAfterTheme()
+	hi StatusLine cterm=NONE gui=NONE
+	hi StatusLineNC cterm=NONE gui=NONE
+	hi StatusLineTerm cterm=NONE gui=NONE
+	hi StatusLineTermNC cterm=NONE gui=NONE
+endfunction
+autocmd User AirlineAfterTheme call s:AirlineAfterTheme()
 
 Plug 'ctrlpvim/ctrlp.vim'
 
@@ -459,17 +466,23 @@ let g:vim_arduino_ino_cmd = 'ano'
 :set colorcolumn=80
 
 lua << EOF
-local lspconfig = require('lspconfig')
-
--- require'lspconfig'.gopls.setup{}
--- require'lspconfig'.pyright.setup{}
+-- local lspconfig = require('lspconfig')
 --
--- vim.g.coq_settings = { auto_start = 'shut-up' }
+-- local servers = { 'gopls', 'pyright', 'ruff'}
+-- for _, lsp in ipairs(servers) do
+--   lspconfig[lsp].setup(require('coq').lsp_ensure_capabilities({}))
+-- end
 
-local servers = { 'gopls', 'pyright', 'ruff'}
-for _, lsp in ipairs(servers) do
-  lspconfig[lsp].setup(require('coq').lsp_ensure_capabilities({}))
-end
+local coq = require "coq"
+
+vim.lsp.config('gopls', coq.lsp_ensure_capabilities({}))
+vim.lsp.enable('gopls')
+
+vim.lsp.config('pyright', coq.lsp_ensure_capabilities({}))
+vim.lsp.enable('pyright')
+
+vim.lsp.config('ruff', coq.lsp_ensure_capabilities({}))
+vim.lsp.enable('ruff')
 
 
 vim.keymap.set("n", ",v", "<cmd>VenvSelect<cr>", { desc = "Select Python venv" })
@@ -489,13 +502,6 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 })
 
 EOF
-
-
-" vim.lsp.config('gopls', require('coq').lsp_ensure_capabilities({}))
-" vim.lsp.config('pyright', require('coq').lsp_ensure_capabilities({}))
-" vim.lsp.config('ruff', require('coq').lsp_ensure_capabilities({}))
-"
-" lua require'coq-lsp'.setup()
 
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
