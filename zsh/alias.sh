@@ -8,6 +8,7 @@ alias l='ls -CF'
 alias vi=nvim
 
 alias neovim='NVIM_TUI_ENABLE_TRUE_COLOR=1 konsole -e nvim &'
+alias neovim='ghostty -e nvim &'
 alias vim=nvim
 alias cat=bat
 alias agdj="ag --ignore-dir components/bower_components/ --ignore-dir static_source --ignore migrations"

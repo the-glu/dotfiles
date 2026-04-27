@@ -159,9 +159,10 @@ Plug 'Shougo/context_filetype.vim'
 Plug 'sheerun/vim-polyglot'
 
 Plug 'psliwka/vim-smoothie'
+"Plug 'karb94/neoscroll.nvim'
 
 Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim', { 'branch': '0.1.x' }
+Plug 'nvim-telescope/telescope.nvim', { 'branch': 'master' }
 
 "Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
@@ -511,7 +512,5 @@ nnoremap <leader>fr <cmd>Telescope lsp_references<cr>
 nnoremap <leader>f<leader> <cmd>Telescope resume<cr>
 
 highlight link DiagnosticError CodeschoolError
-
-hi statusline cterm=NONE gui=NONE
-hi tabline cterm=NONE gui=NONE
-hi winbar cterm=NONE gui=NONE
+" set ambiwidth=double
+let g:airline_symbols_ascii = 1
