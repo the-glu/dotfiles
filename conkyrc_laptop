@@ -74,11 +74,11 @@ ${color1}enp0s25: ${color3}${alignr}${addr enp0s25}
 ${color1}Up:${color} ${color3}${upspeed enp0s25}${color}${alignr}${color1}Down:${color} ${color3}${downspeed enp0s25}${color}
 ${upspeedgraph enp0s25 20,120 FF8800 FF8800}${alignr}${downspeedgraph enp0s25 20,120 FF8800 FF8800}
 ${color1}Sent:${color} ${color2}${totalup enp0s25}${color}${alignr}${color1}Received:${color} ${color2}${totaldown enp0s25}${color}
-${else}${if_existing /proc/net/route wlp170s0}
-${color1}wlp170s0: ${color3}${alignr}${addr wlp170s0}
-${color1}Up:${color} ${color3}${upspeed wlp170s0}${color}${alignr}${color1}Down:${color} ${color3}${downspeed wlp170s0}${color}
-${upspeedgraph wlp170s0 20,120 FF8800 FF8800}${alignr}${downspeedgraph wlp170s0 20,120 FF8800 FF8800}
-${color1}Sent:${color} ${color2}${totalup wlp170s0}${color}${alignr}${color1}Received:${color} ${color2}${totaldown wlp170s0}${color}
+${else}${if_existing /proc/net/route wlp0s20f3}
+${color1}wlp0s20f3: ${color3}${alignr}${addr wlp0s20f3}
+${color1}Up:${color} ${color3}${upspeed wlp0s20f3}${color}${alignr}${color1}Down:${color} ${color3}${downspeed wlp0s20f3}${color}
+${upspeedgraph wlp0s20f3 20,120 FF8800 FF8800}${alignr}${downspeedgraph wlp0s20f3 20,120 FF8800 FF8800}
+${color1}Sent:${color} ${color2}${totalup wlp0s20f3}${color}${alignr}${color1}Received:${color} ${color2}${totaldown wlp0s20f3}${color}
 ${else}
 Network disconnected
 ${color6}Connect to a network to see statistics${color}
@@ -105,6 +105,7 @@ ${color1}Disk IO:${color3} ${alignr}$diskio
 ${color2}${diskiograph 20,240 FF8800 FF8800}
 ${color1}Battery: ${color3}${alignr}${battery BAT1} ${color2}${battery_time BAT1}
 ${color7}${hr}${color}${execpi 300 ~/.conky_agenda }
+
 
 
 
