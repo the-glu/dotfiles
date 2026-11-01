@@ -398,25 +398,16 @@ let g:vim_arduino_ino_cmd = 'ano'
 
 :set colorcolumn=80
 
+set iskeyword+=-
+
 lua << EOF
--- local lspconfig = require('lspconfig')
---
--- local servers = { 'gopls', 'pyright', 'ruff'}
--- for _, lsp in ipairs(servers) do
---   lspconfig[lsp].setup(require('coq').lsp_ensure_capabilities({}))
--- end
 
 local coq = require "coq"
+coq.setup()
 
-vim.lsp.config('gopls', coq.lsp_ensure_capabilities({}))
 vim.lsp.enable('gopls')
-
-vim.lsp.config('pyright', coq.lsp_ensure_capabilities({}))
 vim.lsp.enable('pyright')
-
-vim.lsp.config('ruff', coq.lsp_ensure_capabilities({}))
 vim.lsp.enable('ruff')
-
 
 vim.keymap.set("n", ",v", "<cmd>VenvSelect<cr>", { desc = "Select Python venv" })
 require("venv-selector").setup({ search = {}, options = {} })
