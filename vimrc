@@ -85,6 +85,7 @@ let g:VM_maps['Find Under'] = '<C-d>'
 let g:VM_maps['Find Subword Under'] = '<C-d>'
 let g:VM_maps['Find Prev'] = '<C-p>'
 let g:VM_maps['Skip Region'] = '<C-x>'
+autocmd User visual_multi_mappings imap <buffer><expr> <CR> pumvisible() && complete_info(['selected']).selected != -1 ? "\<C-y>" : "\<Plug>(VM-I-Return)"
 
 Plug 'vim-scripts/bufkill.vim'
 
