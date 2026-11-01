@@ -7,7 +7,6 @@ alias la='ls -A'
 alias l='ls -CF'
 alias vi=nvim
 
-alias neovim='NVIM_TUI_ENABLE_TRUE_COLOR=1 konsole -e nvim &'
 alias neovim='ghostty -e nvim &'
 alias vim=nvim
 alias cat=bat
@@ -20,7 +19,7 @@ alias batlim="sudo ectool fwchargelimit"
 alias gpf="git bebeplanteforte --force"
 alias btm="(git checkout master || git checkout main); git pull"
 
-alias qrb='function _qrb() {
+qrb() {
   local T="$1"
   local C=$(git rev-parse --abbrev-ref HEAD)
 
@@ -45,4 +44,4 @@ alias qrb='function _qrb() {
   git branch -D "$T" || return 1
   git checkout -b "$T" || return 1
   git cherry-pick "$LAST_COMMIT"
-}; _qrb'
+}

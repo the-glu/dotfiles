@@ -1,5 +1,3 @@
-export __GIT_PROMPT_DIR=~/.zsh/scripts/
-
 autoload -U add-zsh-hook
 
 add-zsh-hook chpwd chpwd_update_git_vars
@@ -8,12 +6,7 @@ add-zsh-hook precmd precmd_update_git_vars
 
 ## Function definitions
 function preexec_update_git_vars() {
-    case "$2" in
-        git*)
-        __EXECUTED_GIT_COMMAND=1
-        ;;
-    esac
-        __EXECUTED_GIT_COMMAND=1
+    __EXECUTED_GIT_COMMAND=1
 }
 
 function precmd_update_git_vars() {
@@ -30,20 +23,41 @@ function chpwd_update_git_vars() {
 function update_current_git_vars() {
     unset __CURRENT_GIT_STATUS
 
-    local gitstatus="$__GIT_PROMPT_DIR/gitstatus.py"
-    _GIT_STATUS=`python2 ${gitstatus}`
-    __CURRENT_GIT_STATUS=("${(@f)_GIT_STATUS}")
-        GIT_BRANCH=$__CURRENT_GIT_STATUS[1]
-        GIT_REMOTE=$__CURRENT_GIT_STATUS[2]
-        GIT_STAGED=$__CURRENT_GIT_STATUS[3]
-        GIT_CONFLICTS=$__CURRENT_GIT_STATUS[4]
-        GIT_CHANGED=$__CURRENT_GIT_STATUS[5]
-        GIT_UNTRACKED=$__CURRENT_GIT_STATUS[6]
-        GIT_CLEAN=$__CURRENT_GIT_STATUS[7]
+    local out line oid
+    local -a ab
+    out=$(git status --porcelain=v2 --branch 2>/dev/null) || return
+
+    __CURRENT_GIT_STATUS=1
+    GIT_BRANCH=
+    GIT_REMOTE=
+    GIT_STAGED=0
+    GIT_CONFLICTS=0
+    GIT_CHANGED=0
+    GIT_UNTRACKED=0
+
+    for line in ${(f)out}; do
+        case $line in
+            ('# branch.oid '*) oid=${line#\# branch.oid } ;;
+            ('# branch.head '*) GIT_BRANCH=${line#\# branch.head } ;;
+            ('# branch.ab '*)
+                ab=(${=line#\# branch.ab })
+                (( ${ab[2]#-} )) && GIT_REMOTE+=" ↓${ab[2]#-}"
+                (( ${ab[1]#+} )) && GIT_REMOTE+=" ↑${ab[1]#+}"
+                ;;
+            ([12]' '*)
+                [[ ${line[3]} != . ]] && (( ++GIT_STAGED ))
+                [[ ${line[4]} != . ]] && (( ++GIT_CHANGED ))
+                ;;
+            ('u '*) (( ++GIT_CONFLICTS )) ;;
+            ('? '*) (( ++GIT_UNTRACKED )) ;;
+        esac
+    done
+
+    [[ $GIT_BRANCH == '(detached)' ]] && GIT_BRANCH=":${oid[1,7]}"
+    GIT_CLEAN=$(( !(GIT_STAGED + GIT_CONFLICTS + GIT_CHANGED + GIT_UNTRACKED) ))
 }
 
 git_super_status() {
-        precmd_update_git_vars
     if [ -n "$__CURRENT_GIT_STATUS" ]; then
 
         ZSH_THEME_GIT_PROMPT_PREFIX=" "

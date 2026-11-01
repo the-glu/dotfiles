@@ -1,6 +1,6 @@
 
 unsetopt beep notify
-autoload terminfo colors
+autoload colors
 colors
 watch=all
 
@@ -18,4 +18,4 @@ for f in /etc/DIR_COLORS ${HOME}/.dir_colors; do
 done
 
 # Usefull vars
-export EDITOR=vim
+export EDITOR=nvim

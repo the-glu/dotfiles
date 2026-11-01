@@ -34,43 +34,22 @@ prompt_end() {
 # Context: user@hostname (who am I and where am I)
 prompt_context() {
 
-  local user=`whoami`
+  local user=$USERNAME
    if [[ "$user" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]; then
      prompt_segment black default "%(!.%{%F{yellow}%}.)%F{blue}$user%F{default}@%F{green}%m%F{default}"
   fi
 }
 
-parse_git_dirty() {
-  local STATUS=''
-  local FLAGS
-  FLAGS=('--porcelain')
-  if [[ "$(command git config --get oh-my-zsh.hide-dirty)" != "1" ]]; then
-    if [[ $POST_1_7_2_GIT -gt 0 ]]; then
-      FLAGS+='--ignore-submodules=dirty'
-    fi
-    if [[ "$DISABLE_UNTRACKED_FILES_DIRTY" == "true" ]]; then
-      FLAGS+='--untracked-files=no'
-    fi
-    STATUS=$(command git status ${FLAGS} 2> /dev/null | tail -n1)
-  fi
-  echo $STATUS
-}
-
 # Git: branch/detached head, dirty status
 prompt_git() {
-
-  local ref dirty
-  if $(git rev-parse --is-inside-work-tree >/dev/null 2>&1); then
-    dirty=$(parse_git_dirty)
-
-    if [[ -n $dirty ]]; then
-      prompt_segment yellow black
-    else
+  if [[ -n $__CURRENT_GIT_STATUS ]]; then
+    if [[ $GIT_CLEAN == 1 ]]; then
       prompt_segment green black
+    else
+      prompt_segment yellow black
     fi
 
     echo -n "$(git_super_status)%F{black}"
-
   fi
 }
 
@@ -95,7 +74,7 @@ prompt_status() {
   local symbols
   symbols=()
   [[ $RETVAL -ne 0 ]] && symbols+="%{%F{red}%}✘"
-  [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="%{%F{cyan}%}⚙"
+  (( $#jobstates )) && symbols+="%{%F{cyan}%}⚙"
 
   [[ -n "$symbols" ]] && prompt_segment black default "$symbols"
 }

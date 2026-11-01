@@ -1,9 +1,8 @@
 HISTFILE=~/.histfile
 
-HISTSIZE=10000
+HISTSIZE=20000
 SAVEHIST=10000
 
-setopt append_history
 setopt extended_history
 setopt extendedglob
 setopt hist_expire_dups_first
