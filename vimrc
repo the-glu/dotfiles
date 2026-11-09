@@ -404,7 +404,7 @@ set iskeyword+=-
 lua << EOF
 
 local coq = require "coq"
-coq.setup()
+coq.setup({ clients = { lsp = { always_on_top = { "pyright", "gopls" } } } })
 
 vim.lsp.enable('gopls')
 vim.lsp.enable('pyright')
@@ -416,6 +416,7 @@ require("venv-selector").setup({ search = {}, options = {} })
 require("conform").setup({
   formatters_by_ft = {
     python = { "ruff_fix", "ruff_format" },
+    go = { "gofmt", "goimports"},
   },
 })
 
